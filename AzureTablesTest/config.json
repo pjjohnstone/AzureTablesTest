@@ -1,3 +1,6 @@
-﻿{
-  "tableStorageKey": "UseDevelopmentStorage=true"
-}
+﻿[
+  {
+    "Key": "tableStorageKey",
+    "Value": "UseDevelopmentStorage=true"
+  }
+]

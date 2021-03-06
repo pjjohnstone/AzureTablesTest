@@ -3,7 +3,6 @@
 open Files
 
 type ConfigValue = {Key:string; Value:string}
-type ConfigValueDto = string * string
 
 type ConfigError =
   | ValidationError of string
@@ -16,32 +15,14 @@ type ResultBuilder() =
 
 let private result = ResultBuilder()
 
-let toDomain (dto: ConfigValueDto list): Result<ConfigValue list, string> =
-  result {
-    return dto
-    |> List.map (fun d ->
-      let (k,v) = d
-      printfn "k: %s v: %s" k v
-      {Key=k; Value=v})
-  }
-
 let private parseJson jsonString :Result<ConfigValue list, ConfigError> =
   result {
     let! deserializedValue =
-      printfn "Json: %A" jsonString
       jsonString
       |> Json.deserialize
       |> Result.mapError DeserializationException
 
-    printfn "DeserializedValue: %A" deserializedValue
-
-    let! domainValue =
-      deserializedValue
-      |> toDomain
-      |> Result.mapError ValidationError
-
-    printfn "Domain value: %A" domainValue
-    return domainValue
+    return deserializedValue
   }
 
 let load filePath =
