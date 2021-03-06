@@ -1,13 +1,10 @@
-﻿// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
-
-open System
-
-// Define a function to construct a message to print
-let from whom =
-    sprintf "from %s" whom
+﻿open System.IO
 
 [<EntryPoint>]
 let main argv =
-    let message = from "F#" // Call the function
-    printfn "Hello world %s" message
+    let configPath = Path.Join(Directory.GetCurrentDirectory(), "config.json")
+    let config = Config.load configPath
+    let connectionString = Config.getValue config "tableStorageKey"
+
+    printfn "String is: %A" connectionString
     0 // return an integer exit code
