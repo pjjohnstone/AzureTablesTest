@@ -22,5 +22,12 @@ let main argv =
 
     let (bob: Person.T) = {FirstName="bob"; LastName="bobsson"; Email="bob@bob.bob"; Phone="123123123"}
 
-    Person.save bob table |> ignore
+    let addBob =
+      let result = Person.save bob table
+      match result with
+      | Ok r -> printfn "OK: %A" r
+      | Error e -> printfn "Not OK: %A" e
+
+    addBob
+
     0 // return an integer exit code
