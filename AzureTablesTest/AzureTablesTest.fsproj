@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="AzureTables.fs" />
     <Compile Include="ResultBuilder.fs" />
     <Compile Include="Person.fs" />
     <Content Include="config.json">
