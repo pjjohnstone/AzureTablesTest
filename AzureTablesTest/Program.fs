@@ -30,4 +30,12 @@ let main argv =
 
     addBob
 
+    let fetchBob =
+      let result = Person.load bob table
+      match result with
+      | Ok r -> printfn "OK: %A" r
+      | Error e -> printfn "Not OK: %A" e
+
+    fetchBob
+
     0 // return an integer exit code
