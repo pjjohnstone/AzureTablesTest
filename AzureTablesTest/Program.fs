@@ -22,13 +22,13 @@ let main argv =
 
     let (bob: Person.T) = {FirstName="bob"; LastName="bobsson"; Email="bob@bob.bob"; Phone="123123123"}
 
-    let addBob =
-      let result = Person.save bob table
-      match result with
-      | Ok r -> printfn "OK: %A" r
-      | Error e -> printfn "Not OK: %A" e
+    //let addBob =
+    //  let result = Person.save bob table
+    //  match result with
+    //  | Ok r -> printfn "OK: %A" r
+    //  | Error e -> printfn "Not OK: %A" e
 
-    addBob
+    //addBob
 
     let fetchBob =
       let result = Person.load bob table

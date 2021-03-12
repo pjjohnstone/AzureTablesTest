@@ -30,7 +30,7 @@ let save person (table: CloudTable): Result<TableResult, StorageException> =
 
 let personRetrieveOperation person =
   let {FirstName=r;LastName=p} = person
-  retrieveOperation p r
+  TableOperation.Retrieve<Dto>(p, r)
 
 let load person (table: CloudTable): Result<T, StorageException> =
   let executor = executeOperation table
