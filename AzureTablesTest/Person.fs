@@ -22,10 +22,15 @@ let toDomain (dto: PersonDto) =
 let insertOperation (person: PersonDto) =
   TableOperation.Insert(person)
 
+let executeOperation (table: CloudTable) operation: Result<TableResult, StorageException> =
+  try
+    Ok(table.Execute(operation))
+  with
+    | :? StorageException as ex -> Error(ex)
+
 let save person (table: CloudTable): Result<TableResult, StorageException> =
-  result {    
-    return person
+    let executor = executeOperation table
+    person
     |> fromDomain
     |> insertOperation
-    |> table.Execute
-  }
+    |> executor
