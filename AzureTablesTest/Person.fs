@@ -36,21 +36,24 @@ let save (table: CloudTable) person: Result<TableResult, StorageException> =
   |> insertOperation
   |> executor
 
-let personRetrieveOperation person =
-  let {FirstName=r;LastName=p} = person
-  TableOperation.Retrieve<Dto>(p, r)
+let personRetrieveOperation p =
+  let {FirstName=rK;LastName=pK} = p
+  TableOperation.Retrieve<Dto>(pK, rK)
+
+let personDeleteOperation (r: Result<TableResult, StorageException>) =
+  match r with
+  | Ok p -> Ok(TableOperation.Delete(p.Result :?> Dto))
+  | Error e -> Error(e)
 
 let delete t p =
   let executor = executeOperation t
-  let r =
-    p
-    |> personRetrieveOperation
-    |> executor
-  match r with
-  | Ok o -> 
-    TableOperation.Delete(o.Result :?> Dto)
-    |> executor
-  | Error e -> Error(e)
+  let resultExecutor = executeWrappedOperation t
+  p
+  |> personRetrieveOperation
+  |> executor
+  |> validateResult
+  |> personDeleteOperation
+  |> resultExecutor
 
 let load (table: CloudTable) person: Result<T, StorageException> =
   let executor = executeOperation table
