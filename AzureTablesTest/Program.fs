@@ -34,7 +34,15 @@ let main argv =
       | Ok r -> printfn "Person retrieved: %A" r
       | Error e -> printfn "Not OK: %A" e
 
+    let deletePerson p =
+      let result = Person.delete table p
+      match result with
+      | Ok r -> printfn "Person deleted: %A" p
+      | Error e -> printfn "Not OK: %A" e
+
     addPerson bob
+    fetchPerson bob
+    deletePerson bob
     fetchPerson bob
 
     0 // return an integer exit code
