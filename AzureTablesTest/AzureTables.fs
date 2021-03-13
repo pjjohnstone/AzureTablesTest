@@ -3,7 +3,7 @@
 open Microsoft.Azure.Cosmos.Table
 
 let insertOperation (entity: ITableEntity) =
-  TableOperation.Insert(entity)
+  TableOperation.InsertOrReplace(entity)
 
 let executeOperation (table: CloudTable) operation: Result<TableResult, StorageException> =
   try

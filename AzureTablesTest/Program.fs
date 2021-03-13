@@ -22,20 +22,19 @@ let main argv =
 
     let (bob: Person.T) = {FirstName="bob"; LastName="bobsson"; Email="bob@bob.bob"; Phone="123123123"}
 
-    //let addBob =
-    //  let result = Person.save bob table
-    //  match result with
-    //  | Ok r -> printfn "OK: %A" r
-    //  | Error e -> printfn "Not OK: %A" e
-
-    //addBob
-
-    let fetchBob =
-      let result = Person.load bob table
+    let addPerson p =
+      let result = Person.save table p
       match result with
-      | Ok r -> printfn "OK: %A" r
+      | Ok _ -> printfn "Person added: %A" bob
       | Error e -> printfn "Not OK: %A" e
 
-    fetchBob
+    let fetchPerson p =
+      let result = Person.load table p
+      match result with
+      | Ok r -> printfn "Person retrieved: %A" r
+      | Error e -> printfn "Not OK: %A" e
+
+    addPerson bob
+    fetchPerson bob
 
     0 // return an integer exit code

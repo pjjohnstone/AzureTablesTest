@@ -21,7 +21,7 @@ let toDomain (r: Result<TableResult, StorageException>) =
     Ok({FirstName=dto.RowKey; LastName=dto.PartitionKey; Email=dto.Email; Phone=dto.PhoneNumber})
   | Error ex -> Error(ex)
 
-let save person (table: CloudTable): Result<TableResult, StorageException> =
+let save (table: CloudTable) person: Result<TableResult, StorageException> =
   let executor = executeOperation table
   person
   |> fromDomain
@@ -32,7 +32,7 @@ let personRetrieveOperation person =
   let {FirstName=r;LastName=p} = person
   TableOperation.Retrieve<Dto>(p, r)
 
-let load person (table: CloudTable): Result<T, StorageException> =
+let load (table: CloudTable) person: Result<T, StorageException> =
   let executor = executeOperation table
   person
   |> personRetrieveOperation
