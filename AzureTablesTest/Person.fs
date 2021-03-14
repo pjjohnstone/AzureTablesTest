@@ -36,6 +36,13 @@ let save (table: CloudTable) person: Result<TableResult, StorageException> =
   |> insertOperation
   |> executor
 
+let saveBatch (t: CloudTable) ps: Result<TableBatchResult, StorageException> =
+  let executor = executeBatchOperation t
+  ps
+  |> List.map (fun p -> fromDomain p)
+  |> (fun ds -> List.map (fun d -> d :> ITableEntity) ds |> batchInsertOperation)
+  |> executor
+
 let personRetrieveOperation p =
   let {FirstName=rK;LastName=pK} = p
   TableOperation.Retrieve<Dto>(pK, rK)

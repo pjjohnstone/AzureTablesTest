@@ -21,28 +21,32 @@ let main argv =
     table.CreateIfNotExists() |> ignore
 
     let (bob: Person.T) = {FirstName="bob"; LastName="bobsson"; Email="bob@bob.bob"; Phone="123123123"}
+    let sally = {bob with FirstName="sally"}
+
+    let resultWriter r m =
+      match r with
+      | Ok _ -> printfn m
+      | Error e -> printfn "Error: %A" e
 
     let addPerson p =
       let result = Person.save table p
-      match result with
-      | Ok _ -> printfn "Person added: %A" bob
-      | Error e -> printfn "Not OK: %A" e
+      resultWriter result $"Person saved: %A{p}"
 
     let fetchPerson p =
       let result = Person.load table p
-      match result with
-      | Ok r -> printfn "Person retrieved: %A" r
-      | Error e -> printfn "Not OK: %A" e
+      resultWriter result $"Person loaded: %A{p}"
 
     let deletePerson p =
       let result = Person.delete table p
-      match result with
-      | Ok r -> printfn "Person deleted: %A" p
-      | Error e -> printfn "Not OK: %A" e
+      resultWriter result $"Person deleted: %A{p}"
+
+    let addPeople ps =
+      let result = Person.saveBatch table ps
+      resultWriter result $"People saved: %A{ps}"
 
     addPerson bob
     fetchPerson bob
     deletePerson bob
-    fetchPerson bob
+    addPeople [bob; sally]
 
     0 // return an integer exit code
