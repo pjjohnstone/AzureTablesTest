@@ -5,6 +5,12 @@ open Microsoft.Azure.Cosmos.Table
 let insertOperation (e: ITableEntity) =
   TableOperation.InsertOrReplace(e)
 
+let retrieveOperation (e: ITableEntity) =
+  TableOperation.Retrieve(e.PartitionKey, e.RowKey)
+
+let deleteOperation (e: ITableEntity) =
+  TableOperation.Delete(e)
+
 let batchInsertOperation es =
   let batchOp = TableBatchOperation()
   es |> List.iter (fun i -> batchOp.Insert(i))

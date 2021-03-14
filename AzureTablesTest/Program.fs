@@ -47,6 +47,6 @@ let main argv =
     addPerson bob
     fetchPerson bob
     deletePerson bob
-    addPeople [bob; sally]
+    //addPeople [bob; sally]
 
     0 // return an integer exit code
