@@ -13,7 +13,7 @@ let deleteOperation (e: ITableEntity) =
 
 let batchInsertOperation es =
   let batchOp = TableBatchOperation()
-  es |> List.iter (fun i -> batchOp.Insert(i))
+  es |> List.iter (fun i -> batchOp.InsertOrReplace(i))
   batchOp
 
 let executeOperation (table: CloudTable) operation: Result<TableResult, StorageException> =
