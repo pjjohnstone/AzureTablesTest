@@ -60,13 +60,12 @@ let personDeleteOperation (r: Result<TableResult, StorageException>) =
 
 let delete t p =
   let executor = executeOperation t
-  let resultExecutor = executeWrappedOperation t
   p
   |> personRetrieveOperation
   |> executor
   |> validateResult
   |> personDeleteOperation
-  |> resultExecutor
+  |> Result.map executor
 
 let load (table: CloudTable) person: Result<T, StorageException> =
   let executor = executeOperation table

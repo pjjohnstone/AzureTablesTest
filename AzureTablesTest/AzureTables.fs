@@ -22,11 +22,6 @@ let executeOperation (table: CloudTable) operation: Result<TableResult, StorageE
   with
     | :? StorageException as ex -> Error(ex)
 
-let executeWrappedOperation (t: CloudTable) r: Result<TableResult, StorageException> =
-  match r with
-  | Ok o -> executeOperation t o
-  | Error e -> Error(e)
-
 let executeBatchOperation (t: CloudTable) o: Result<TableBatchResult, StorageException> =
   try
     Ok(t.ExecuteBatch(o))
