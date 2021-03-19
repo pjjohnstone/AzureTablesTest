@@ -16,7 +16,7 @@ let batchInsertOperation es =
   es |> List.iter (fun i -> batchOp.InsertOrReplace(i))
   batchOp
 
-let executeOperation (table: CloudTable) operation: Result<TableResult, StorageException> =
+let executeOperation (table: CloudTable) operation =
   try
     Ok(table.Execute(operation))
   with
