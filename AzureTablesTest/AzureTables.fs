@@ -16,9 +16,19 @@ let batchInsertOperation es =
   es |> List.iter (fun i -> batchOp.InsertOrReplace(i))
   batchOp
 
+let retrievePropertyQuery p k =
+  TableQuery().Where(
+    TableQuery.GenerateFilterCondition(p, QueryComparisons.Equal, k))
+
 let executeOperation (table: CloudTable) operation =
   try
     Ok(table.Execute(operation))
+  with
+    | :? StorageException as ex -> Error(ex)
+
+let executeQuery (t: CloudTable) q =
+  try
+    Ok(t.ExecuteQuery(q))
   with
     | :? StorageException as ex -> Error(ex)
 

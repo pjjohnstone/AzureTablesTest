@@ -21,7 +21,7 @@ let main argv =
     table.CreateIfNotExists() |> ignore
 
     let (bob: Person.T) = {FirstName="bob"; LastName="bobsson"; Email="bob@bob.bob"; Phone="123123123"}
-    let sally = {bob with FirstName="sally"}
+    let sally = {bob with FirstName="sally"; Email="sally@bob.bob"}
 
     let resultWriter r m =
       match r with
@@ -44,9 +44,14 @@ let main argv =
       let result = Person.saveBatch table ps
       resultWriter result $"People saved: %A{ps}"
 
+    let fetchFamily f =
+      let result = Person.loadByKey table "PartitionKey" f
+      resultWriter result $"People loaded: %A{result}"
+
     addPerson bob
     fetchPerson bob
     deletePerson bob
     addPeople [bob; sally]
+    fetchFamily "bobsson"
 
     0 // return an integer exit code

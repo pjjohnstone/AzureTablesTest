@@ -31,6 +31,9 @@ let toDomain (r: Result<TableResult, StorageException>) =
     Ok({FirstName=dto.RowKey; LastName=dto.PartitionKey; Email=dto.Email; Phone=dto.PhoneNumber})
   | Error ex -> Error(ex)
 
+let toDomain2 (d: Dto) =
+  {FirstName=d.RowKey; LastName=d.PartitionKey; Email=d.Email; Phone=d.PhoneNumber}
+
 let save (table: CloudTable) person: Result<TableResult, StorageException> =
   let executor = executeOperation table
   person
@@ -74,4 +77,11 @@ let load (table: CloudTable) person: Result<T, StorageException> =
   |> executor
   |> validateResult
   |> toDomain
-  
+
+let loadByKey t p k =
+  let executor = executeQuery t
+  retrievePropertyQuery p k
+  |> executor
+  |> Result.map Seq.toList
+  |> Result.map (List.map Dto.fromDynamicTableEntity)
+  |> Result.map (List.map toDomain2)
