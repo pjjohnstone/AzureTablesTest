@@ -13,6 +13,9 @@ type Dto(firstName, lastName, email: string, phone: string) =
   static member fromDynamicTableEntity (e: DynamicTableEntity) =
     Dto(e.RowKey, e.PartitionKey, e.Properties.["Email"].StringValue, e.Properties.["PhoneNumber"].StringValue)
 
+let (<!>) x f =
+  Result.map f x
+
 let validateResult (r: Result<TableResult, StorageException>) =
   match r with
   | Ok o ->
@@ -68,7 +71,7 @@ let delete t p =
   |> executor
   |> validateResult
   |> personDeleteOperation
-  |> Result.map executor
+  <!> executor
 
 let load (table: CloudTable) person: Result<T, StorageException> =
   let executor = executeOperation table
@@ -82,6 +85,6 @@ let loadByKey t p k =
   let executor = executeQuery t
   retrievePropertyQuery p k
   |> executor
-  |> Result.map Seq.toList
-  |> Result.map (List.map Dto.fromDynamicTableEntity)
-  |> Result.map (List.map toDomain2)
+  <!> Seq.toList
+  <!> List.map Dto.fromDynamicTableEntity
+  <!> List.map toDomain2
