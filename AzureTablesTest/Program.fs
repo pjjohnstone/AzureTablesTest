@@ -29,23 +29,23 @@ let main argv =
       | Error e -> printfn "Error: %A" e
 
     let addPerson p =
-      let result = Person.save table p
+      let result = PersonDto.save table p
       resultWriter result $"Person saved: %A{p}"
 
     let fetchPerson p =
-      let result = Person.load table p
+      let result = PersonDto.load table p
       resultWriter result $"Person loaded: %A{p}"
 
     let deletePerson p =
-      let result = Person.delete table p
+      let result = PersonDto.delete table p
       resultWriter result $"Person deleted: %A{p}"
 
     let addPeople ps =
-      let result = Person.saveBatch table ps
+      let result = PersonDto.saveBatch table ps
       resultWriter result $"People saved: %A{ps}"
 
     let fetchFamily f =
-      let result = Person.loadByKey table "PartitionKey" f
+      let result = PersonDto.loadByKey table "PartitionKey" f
       resultWriter result $"People loaded: %A{result}"
 
     addPerson bob
